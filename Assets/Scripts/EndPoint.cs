@@ -1,32 +1,29 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class EndPoint : MonoBehaviour
 {
-    public bool IsEnter { get; private set; }
+    public UnityEvent OnReached;
 
-    public delegate void EndPointHandler();
-
-    public static event EndPointHandler EndPointChange;
+    public bool IsReached { get; private set; }
 
     private void Start()
     {
-        IsEnter = false;
+        IsReached = false;
     }
 
     private void OnTriggerEnter()
     {
-        if (!IsEnter)
+        if (!IsReached)
         {
-            IsEnter = true;
-            OnEndPointChange();
+            IsReached = true;
+
+            EndPointReached();
         }
     }
 
-    private void OnEndPointChange()
+    private void EndPointReached()
     {
-        if (EndPointChange != null)
-        {
-            EndPointChange.Invoke();
-        }
+        OnReached.Invoke();
     }
 }
