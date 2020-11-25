@@ -2,14 +2,13 @@
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    private float _speed = 10;
+    [SerializeField] private float speed = 10;
 
-    private Rigidbody _myRigidBody;
+    private Rigidbody myRigidBody;
 
     private void Awake()
     {
-        _myRigidBody = GetComponent<Rigidbody>();
+        myRigidBody = GetComponent<Rigidbody>();
     }
 
     void FixedUpdate()
@@ -19,7 +18,7 @@ public class Player : MonoBehaviour
 
         if (vertical != 0 || horizontal != 0)
         {
-            _myRigidBody.AddForce(new Vector3(horizontal, 0, vertical) * _speed);
+            myRigidBody.AddForce(new Vector3(horizontal, 0, vertical) * speed);
         }
     }
 }

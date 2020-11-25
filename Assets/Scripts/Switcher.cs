@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.Events;
 
 public class Switcher : MonoBehaviour
 {
+    public UnityEvent OnActivated;
+
     public bool IsSwitched { get; private set; }
-
-    public delegate void SwitchedHandler();
-
-    public event SwitchedHandler SwitchChange;
 
     private void Start()
     {
@@ -19,15 +19,24 @@ public class Switcher : MonoBehaviour
         {
             IsSwitched = true;
 
-            OnSwitchChange();
+            StartCoroutine(HideSwitcherRoutine());
         }
     }
 
-    private void OnSwitchChange()
+    private IEnumerator HideSwitcherRoutine()
     {
-        if (SwitchChange != null)
-        {
-            SwitchChange.Invoke();
-        }
+        Vector3 originalPosition = transform.position;
+        Vector3 newPosition = new Vector3(originalPosition.x, originalPosition.y - 0.4f, originalPosition.z);
+
+        const float time = 2f;
+
+        yield return StartCoroutine(transform.LerpTransformationRoutine(originalPosition, newPosition, time));
+
+        SwitcherActivated();
+    }
+
+    private void SwitcherActivated()
+    {
+        OnActivated.Invoke();
     }
 }
